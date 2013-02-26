@@ -139,6 +139,7 @@ canvas.addEventListener("mousemove", function (event) {
 }, true);
 
 canvas.addEventListener("wheel", function (event) {
+	console.log("foo");
 	var scale = 1.0 + event.deltaY / 100;
 	var wheelPosition = canvasToScene({ x: event.clientX, y: event.clientY });
 	var offset =	{	x: (wheelPosition.x - cameraCenter().x) / sceneWidth(),
@@ -156,6 +157,26 @@ canvas.addEventListener("wheel", function (event) {
 	//~ console.log(camera.left, camera.right, camera.top, camera.bottom);
 	event.preventDefault();
 }, true);
+
+canvas.addEventListener("mousewheel", function (event) {
+	var scale = 1.0 + event.deltaY / 100;
+	var wheelPosition = canvasToScene({ x: event.clientX, y: event.clientY });
+	var offset =	{	x: (wheelPosition.x - cameraCenter().x) / sceneWidth(),
+						y: (wheelPosition.y - cameraCenter().y) / sceneHeight() };
+	
+	//~ console.log(camera.left, camera.right, camera.top, camera.bottom);
+	var zoomWidth = scale * sceneWidth(), zoomHeight = scale * sceneHeight();
+	var center = cameraCenter();
+	var oldWidth = sceneWidth(), oldHeight = sceneHeight();
+	camera.left 	= center.x - zoomWidth / 2 + offset.x * oldWidth * (1 - scale);
+	camera.right	= center.x + zoomWidth / 2 + offset.x * oldWidth * (1 - scale);
+	camera.top		= center.y + zoomHeight / 2 - offset.y * oldHeight * (1 - scale);
+	camera.bottom	= center.y - zoomHeight / 2 - offset.y * oldHeight * (1 - scale);
+	camera.updateProjectionMatrix();
+	//~ console.log(camera.left, camera.right, camera.top, camera.bottom);
+	event.preventDefault();
+}, true);
+
 //~ camera.position.z = 5;
 
 var startTime = new Date();
