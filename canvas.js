@@ -159,7 +159,7 @@ canvas.addEventListener("wheel", function (event) {
 }, true);
 
 canvas.addEventListener("mousewheel", function (event) {
-	var scale = 1.0 + event.wheelDelta / (100 * 120);
+	var scale = 1.0 - event.wheelDelta / (100 * 40);
 	var wheelPosition = canvasToScene({ x: event.clientX, y: event.clientY });
 	var offset =	{	x: (wheelPosition.x - cameraCenter().x) / sceneWidth(),
 						y: (wheelPosition.y - cameraCenter().y) / sceneHeight() };
